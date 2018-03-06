@@ -1,4 +1,1 @@
-{
-  "tests/test_led_tester.py::test_command_line_interface": true,
-  "tests/test_led_tester.py::test_read_file": true
-}
+{}

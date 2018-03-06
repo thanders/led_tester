@@ -35,7 +35,10 @@ def test_command_line_interface():
     assert N is not None
 
 def test_read_file():
-    ifile = "./data/test_data.txt"
-    N, instructions = utils.parseFile(ifile)
+    instr_file = "./data/test_data.txt"
+    N, instructions = utils.parseFile(instr_file)
     assert N == 10
-    assert instructions == ['turn on 0,0 through 9,9\n', 'turn off 0,0 through 9,9\n', 'switch 0,0 through 9,9\n', 'turn off 0,0 through 9,9\n', 'turn on 2,2 through 7,7\n']
+    print(instructions)
+    assert instructions == [('turn on', '0', '0', '9', '9'), ('turn off', '0', '0', '9', '9'), ('switch', '0', '0', '9', '9'),
+     ('turn off', '0', '0', '9', '9'), ('turn on', '2', '2', '7', '7')]
+

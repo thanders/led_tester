@@ -8,52 +8,54 @@ from led_tester import utils
 
 class Light_board:
 
-    def __init__(self, input):
+    def __init__(self, N):
         self.input = input
-        self.light_board = self.processInput(input)# [[0]*N for _ in range(N)]
+        self.light_board = [[0]*N for _ in range(N)]
 
-    def processInput(self, input):
-        if input.startswith('http'):
-            # use requests
-            req = requests.get(input)
-            if req.status_code != 200:
-                print("Error - Could not download the file you input")
-            else:
-                #This reads the request
-                text = req.text
-                f = open("data/instr_download.txt", "w+")
-                f.write(text)
-                f.close()
-                file = "data/instr_download.txt"
-                self.parseFromFile(file)
+def processInput(input):
+    if input.startswith('http'):
+        # use requests
+        req = requests.get(input)
+        if req.status_code != 200:
+            print("Error - Could not download the file you input")
         else:
-            self.parseFromFile(input)
+            #This reads the request
+            text = req.text
+            f = open("data/instr_download.txt", "w+")
+            f.write(text)
+            f.close()
+            file = "data/instr_download.txt"
+            n = parseFromFile(file)
+    else:
+        n = parseFromFile(input)
+    return n
 
-    def parseFromFile(self, input):
+def parseFromFile(input):
 
-        pat = re.compile(
-            ".*(turn on|turn off|switch)\s*([+-]?\d+)\s*,\s*([+-]?\d+)\s*through\s*([+-]?\d+)\s*,\s*([+-]?\d+).*")
-        # read from disk
-        N, instructions = None, []
-        with open(input, 'r') as f:
-            N = int(f.readline())
-            for line in f.readlines():
-                if re.search(pat, line):
-                    result = re.search(pat, line)
-                    instructions.append(result.group(1, 2, 3, 4, 5))
-                else:
-                    print("Could not recognize instruction on line:", line)
-                    continue
-            # Count instructions, assign as N
-            count_instr = len(instructions)
-            self.initalize_LB(N, instructions)
+    pat = re.compile(
+        ".*(turn on|turn off|switch)\s*([+-]?\d+)\s*,\s*([+-]?\d+)\s*through\s*([+-]?\d+)\s*,\s*([+-]?\d+).*")
+    # read from disk
+    n, instructions = None, []
+    with open(input, 'r') as f:
+        n = int(f.readline())
+        for line in f.readlines():
+            if re.search(pat, line):
+                result = re.search(pat, line)
+                instructions.append(result.group(1, 2, 3, 4, 5))
+            else:
+                print("Could not recognize instruction on line:", line)
+                continue
+        # Count instructions, assign as N
+        count_instr = len(instructions)
+
+        print("COUNT INSTRUCTIONS", count_instr)
+        return n
+        #self.initalize_LB(N, instructions)
 
     def initalize_LB(self, N, instructions):
         print("Number of instructions are:", N)
         print("Instructions:")
         pprint.pprint(instructions)
-
-        #light_board = [list(range(i * N, i * N + N)) for i in range(N)]
 
         #Initialize lightboard:
         LB = [[0]*N for _ in range(N)]
@@ -61,7 +63,7 @@ class Light_board:
         number_off = sum(i.count(0) for i in LB)
         number_on = sum(i.count(1) for i in LB)
         print("Lights on:", number_on, "\n", "Lights off:", number_off)
-        return print("Light board:"), pprint.pprint(LB)
+        pprint.pprint(LB)
 
     '''
     def apply_instruction

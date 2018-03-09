@@ -17,9 +17,14 @@ def main(input):
     """Console script for led_tester."""
     print("input", input)
     #N, instructions = utils.processInput(input)
-    x = led_tester.Light_board(input)
-    pprint.pprint(x.light_board) # Initialize the class
-    print(x.input)
+
+    # Process input to get n
+    n = led_tester.processInput(input)
+    # Initiate Light_board class to define light_board with n
+    x = led_tester.Light_board(n)
+    # Pretty print instance x's empty light board
+    pprint.pprint(x.light_board)
+    
     return 0
 
 if __name__ == "__main__":

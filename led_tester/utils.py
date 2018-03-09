@@ -11,7 +11,6 @@ import pprint
 def processInput(input):
     if input.startswith('http'):
         # use requests
-
         req = requests.get(input)
         if req.status_code != 200:
             print("Error - Could not download the file you input")
@@ -24,7 +23,7 @@ def processInput(input):
             file = "data/instr_download.txt"
             parseFromFile(file)
     else:
-        parseFromFile(input)
+        return parseFromFile(input)
 
 def parseFromFile(input):
 
@@ -43,6 +42,8 @@ def parseFromFile(input):
         #Count instructions, assign as N
         count_instr = len(instructions)
         light_board(N,instructions)
+        print(N)
+        print(instructions)
         return N, instructions
 
 def light_board(N, instructions):
@@ -70,13 +71,14 @@ def light_board(N, instructions):
 def apply_instructions(single_instr):
     print("Single instruction:", single_instr)
 
+'''
     action = single_instr[0]
     start_r = int(single_instr[1])
     start_c = int(single_instr[2])
     end_r = int(single_instr[3])
     end_c = int(single_instr[4])
     print(action)
-'''
+    
     for i in range(start_r, end_r+1):
         for j in range(start_c, end_c+1):
             light_board[i][j] = 1

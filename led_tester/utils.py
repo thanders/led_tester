@@ -4,6 +4,7 @@
 
 import re
 import requests
+import pprint
 
 # Parses the instructions file
 
@@ -39,13 +40,21 @@ def parseFromFile(input):
             else:
                 print("wtf")
                 continue
+        #Count instructions, assign as N
         count_instr = len(instructions)
-        print("number of instructions:", count_instr)
         light_board(N,instructions)
         return N, instructions
 
 def light_board(N, instructions):
-    print(N)
-    print(instructions)
+    print("Number of instructions are:", N)
+    print("Instructions:")
+    pprint.pprint(instructions)
 
+    #light_board = [list(range(i * N, i * N + N)) for i in range(N)]
+    
+    #Initialize lightboard:
+    light_board = [[0]*N for _ in range(N)]
+    print("Light board: ")
+    pprint.pprint(light_board)
 #print(parseFromFile("../data/test_data.txt"))
+

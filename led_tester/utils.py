@@ -41,6 +41,11 @@ def parseFromFile(input):
                 continue
         count_instr = len(instructions)
         print("number of instructions:", count_instr)
+        light_board(N,instructions)
         return N, instructions
+
+def light_board(N, instructions):
+    print(N)
+    print(instructions)
 
 #print(parseFromFile("../data/test_data.txt"))

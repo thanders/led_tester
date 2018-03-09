@@ -19,12 +19,17 @@ def main(input):
     #N, instructions = utils.processInput(input)
 
     # Process input to get n
-    n = led_tester.processInput(input)
+    n, instructions = led_tester.processInput(input)
     # Initiate Light_board class to define light_board with n
     x = led_tester.Light_board(n)
     # Pretty print instance x's empty light board
     pprint.pprint(x.light_board)
-    
+    for instr in instructions:
+        x.apply_instruction(instr)
+
+    # count lights on and off
+    print(x.LB_statistics(n, instructions))
+    pprint.pprint(x.light_board)
     return 0
 
 if __name__ == "__main__":

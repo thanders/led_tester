@@ -71,6 +71,8 @@ def light_board(N, instructions):
 def apply_instructions(single_instr):
     print("Single instruction:", single_instr)
 
+
+
 '''
     action = single_instr[0]
     start_r = int(single_instr[1])

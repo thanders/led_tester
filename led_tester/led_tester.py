@@ -8,9 +8,68 @@ from led_tester import utils
 
 class Light_board:
 
-    def __init__(self, N):
+    def __init__(self, n):
         self.input = input
-        self.light_board = [[0]*N for _ in range(N)]
+        self.light_board = [[0]*n for _ in range(n)]
+
+
+    def LB_statistics(self, n, instructions):
+        print("Number of instructions are:", n)
+        print("Instructions:")
+        pprint.pprint(instructions)
+
+        number_off = sum(i.count(0) for i in self.light_board)
+        number_on = sum(i.count(1) for i in self.light_board)
+        return print("Lights on:", number_on, "\n", "Lights off:", number_off)
+
+    def apply_instruction(self,instr):
+
+        print('START:')
+        action = instr[0]
+        start_r = int(instr[1])
+        start_c = int(instr[2])
+        end_r = int(instr[3])
+        end_c = int(instr[4])
+
+        print(action, start_r, start_c, end_r, end_c)
+
+        if action == 'turn on':
+            for i in range(start_r, end_r+1):
+                for j in range(start_c, end_c+1):
+                    self.light_board[i][j] = 1
+
+        if action == 'turn off':
+            for i in range(start_r, end_r+1):
+                for j in range(start_c, end_c+1):
+                    self.light_board[i][j] = 0
+
+        if action == 'switch':
+            for i in range(start_r, end_r+1):
+                for j in range(start_c, end_c+1):
+                    if self.light_board[i][j] is 0:
+                        self.light_board[i][j] = 1
+                    else:
+                        self.light_board[i][j] = 0
+
+        pprint.pprint(self.light_board)
+
+        '''
+            if action is "turn off":
+                for i in range(start_r, end_r+1):
+                    for j in range(start_c, end_c+1):
+                        self.light_board[i][j] = 0
+                        # print(parseFromFile("../data/test_data.txt"))
+
+            if action is "switch":
+                for i in range(start_r, end_r+1):
+                    for j in range(start_c, end_c+1):
+                        if self.light_board[i][j] == 0:
+                            self.light_board[i][j] = 1
+                        if self.light_board[i][j] == 1:
+                            self.light_board[i][j] = 0
+                        # print(parseFromFile("../data/test_data.txt"))
+
+'''
 
 def processInput(input):
     if input.startswith('http'):
@@ -25,10 +84,10 @@ def processInput(input):
             f.write(text)
             f.close()
             file = "data/instr_download.txt"
-            n = parseFromFile(file)
+            n, instructions = parseFromFile(file)
     else:
-        n = parseFromFile(input)
-    return n
+        n, instructions = parseFromFile(input)
+    return n, instructions
 
 def parseFromFile(input):
 
@@ -49,40 +108,5 @@ def parseFromFile(input):
         count_instr = len(instructions)
 
         print("COUNT INSTRUCTIONS", count_instr)
-        return n
+        return n, instructions
         #self.initalize_LB(N, instructions)
-
-    def initalize_LB(self, N, instructions):
-        print("Number of instructions are:", N)
-        print("Instructions:")
-        pprint.pprint(instructions)
-
-        #Initialize lightboard:
-        LB = [[0]*N for _ in range(N)]
-
-        number_off = sum(i.count(0) for i in LB)
-        number_on = sum(i.count(1) for i in LB)
-        print("Lights on:", number_on, "\n", "Lights off:", number_off)
-        pprint.pprint(LB)
-
-    '''
-    def apply_instruction
-
-        action = single_instr[0]
-        start_r = int(single_instr[1])
-        start_c = int(single_instr[2])
-        end_r = int(single_instr[3])
-        end_c = int(single_instr[4])
-        print(action)
-
-        for i in range(start_r, end_r + 1):
-            for j in range(start_c, end_c + 1):
-                light_board[i][j] = 1
-                # print(parseFromFile("../data/test_data.txt"))
-
-
-    def main(self, input):
-        utils.processInput(input)
-'''
-
-

@@ -1,1 +1,3 @@
-{}
+{
+  "tests/test_led_tester.py::test_command_line_interface": true
+}

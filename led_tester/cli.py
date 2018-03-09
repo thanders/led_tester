@@ -14,7 +14,7 @@ def main(input=None):
     """Console script for led_tester."""
     print("input", input)
 
-    utils.parseFile(input)
+    utils.processInput(input)
     #ledTester = LEDTester(N)
 
     #for instruction in instructions:

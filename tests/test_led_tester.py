@@ -12,7 +12,6 @@ from led_tester import led_tester
 from led_tester import cli
 from led_tester import utils
 
-
 @pytest.fixture
 def response():
     """Sample pytest fixture.
@@ -29,16 +28,17 @@ def test_content(response):
     # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
 
+# Checks that
 def test_command_line_interface():
     ifile = "./data/input_assign3.txt"
-    N, instructions = utils.parseFile(ifile)
+    N, instructions = utils.processInput(ifile)
     assert N is not None
 
+# Checks that the parsefile method is able to read data correctly from a test file and store it in the instructions variable
 def test_read_file():
     instr_file = "./data/test_data.txt"
-    N, instructions = utils.parseFile(instr_file)
+    N, instructions = utils.parseFromFile(instr_file)
     assert N == 10
     print(instructions)
     assert instructions == [('turn on', '0', '0', '9', '9'), ('turn off', '0', '0', '9', '9'), ('switch', '0', '0', '9', '9'),
      ('turn off', '0', '0', '9', '9'), ('turn on', '2', '2', '7', '7')]
-

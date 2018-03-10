@@ -1,38 +1,78 @@
-# -*- coding: utf-8 -*-
-import re
 import pprint
+import re
 import requests
 import sys
 sys.path.append('.')
-from led_tester import utils
 
 class Light_board:
 
     def __init__(self, n):
-        self.input = input
+        self.lbSize = n
         self.light_board = [[0]*n for _ in range(n)]
 
-
     def LB_statistics(self, n, instructions):
-        print("Number of instructions are:", n)
-        print("Instructions:")
-        pprint.pprint(instructions)
-
         number_off = sum(i.count(0) for i in self.light_board)
         number_on = sum(i.count(1) for i in self.light_board)
-        return print("Lights on:", number_on, "\n", "Lights off:", number_off)
+        print("Number of instructions: {:0,.0f}".format(len(instructions)))
+        print("Size of light board: {:0,.0f}".format(n), "rows, {:0,.0f}".format(n), "columns", "and {:0,.0f}".format(n*n), "light bulbs")
+        print("Lights on: {:0,.0f}".format(number_on))
+        print("Lights off: {:0,.0f}".format(number_off))
+        print("Sum of on and off: {:0,.0f}".format(number_on + number_off))
+        return 0
 
     def apply_instruction(self,instr):
 
-        print('START:')
+        # Check to make sure instructions are all within a box:
+        self.lbSize
+        border_min_lx = 0
+        border_max_lx = self.lbSize
+        border_min_ly = 0
+        border_max_ly = self.lbSize
+        border_min_rx = 0
+        border_max_rx = self.lbSize
+        border_min_ry = 0
+        border_max_ry = self.lbSize
+
         action = instr[0]
         start_r = int(instr[1])
         start_c = int(instr[2])
         end_r = int(instr[3])
         end_c = int(instr[4])
 
-        print(action, start_r, start_c, end_r, end_c)
+        #Check to make sure start row instruction within grid
+        if border_min_ly <= start_r <= border_max_ly:
+            pass
+        else:
+            if start_r < end_r:
+                start_r = border_min_ly
+            else:
+                end_r = border_max_ly
+        #Check to make sure start column instruction within grid
+        if border_min_lx <= start_c <= border_max_rx:
+            pass
+        else:
+            if start_c < end_c:
+                start_c = border_min_lx
+            else:
+                end_c = border_max_rx
+        #Check to make sure end row instruction within grid
+        if border_min_ly <= end_r <= border_max_ly:
+            pass
+        else:
+            if end_r > start_r:
+                end_r = border_max_ry
+            else:
+                end_r = border_min_ry
+        #Check to make sure end col instruction within grid
+        if border_min_lx <= end_c <= border_max_lx:
+            pass
+        else:
+            if end_c > start_c:
+                end_c = border_max_rx
+            else:
+                end_c = border_min_lx
 
+        # Execute Instructions
         if action == 'turn on':
             for i in range(start_r, end_r+1):
                 for j in range(start_c, end_c+1):
@@ -51,26 +91,7 @@ class Light_board:
                     else:
                         self.light_board[i][j] = 0
 
-        pprint.pprint(self.light_board)
-
-        '''
-            if action is "turn off":
-                for i in range(start_r, end_r+1):
-                    for j in range(start_c, end_c+1):
-                        self.light_board[i][j] = 0
-                        # print(parseFromFile("../data/test_data.txt"))
-
-            if action is "switch":
-                for i in range(start_r, end_r+1):
-                    for j in range(start_c, end_c+1):
-                        if self.light_board[i][j] == 0:
-                            self.light_board[i][j] = 1
-                        if self.light_board[i][j] == 1:
-                            self.light_board[i][j] = 0
-                        # print(parseFromFile("../data/test_data.txt"))
-
-'''
-
+# These are functions and are not required by the class above:
 def processInput(input):
     if input.startswith('http'):
         # use requests
@@ -85,14 +106,13 @@ def processInput(input):
             f.close()
             file = "data/instr_download.txt"
             n, instructions = parseFromFile(file)
+            return n, instructions
     else:
         n, instructions = parseFromFile(input)
-    return n, instructions
+        return n, instructions
 
 def parseFromFile(input):
-
-    pat = re.compile(
-        ".*(turn on|turn off|switch)\s*([+-]?\d+)\s*,\s*([+-]?\d+)\s*through\s*([+-]?\d+)\s*,\s*([+-]?\d+).*")
+    pat = re.compile(".*(turn on|turn off|switch)\s*([+-]?\d+)\s*,\s*([+-]?\d+)\s*through\s*([+-]?\d+)\s*,\s*([+-]?\d+).*")
     # read from disk
     n, instructions = None, []
     with open(input, 'r') as f:
@@ -102,11 +122,6 @@ def parseFromFile(input):
                 result = re.search(pat, line)
                 instructions.append(result.group(1, 2, 3, 4, 5))
             else:
-                print("Could not recognize instruction on line:", line)
+                #print("Could not recognize instruction on line:", line)
                 continue
-        # Count instructions, assign as N
-        count_instr = len(instructions)
-
-        print("COUNT INSTRUCTIONS", count_instr)
         return n, instructions
-        #self.initalize_LB(N, instructions)

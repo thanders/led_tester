@@ -1,0 +1,11 @@
+certifi==2017.11.5
+chardet==3.0.4
+click==6.7
+idna==2.6
+-e git+https://github.com/thanders/led_tester.git@a2a55bad1f006148452777f3b3d38bddbb0c32ce#egg=led_tester
+numpy==1.14.0
+requests==2.18.4
+scikit-learn==0.19.1
+scipy==1.0.0
+-e git+https://github.com/thanders/systeminfo.git@149c0d9cdddd93c452ba7b5538929af725abe506#egg=systeminfo
+urllib3==1.22

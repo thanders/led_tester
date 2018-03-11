@@ -13,6 +13,7 @@ click.disable_unicode_literals_warning = True
 
 def main(input):
     """Console script for led_tester."""
+
     print("Input(path/URL):", input)
     # Process input to get n
     n, instructions = led_tester.processInput(input)
@@ -23,7 +24,6 @@ def main(input):
         x.apply_instruction(instr)
     # Call the LB_statistics method to view light board statistics
     x.LB_statistics(n, instructions)
-
     return 0
 
 if __name__ == "__main__":

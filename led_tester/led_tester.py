@@ -23,15 +23,16 @@ class Light_board:
     def apply_instruction(self,instr):
 
         # Check to make sure instructions are all within a box:
-        self.lbSize
-        border_min_lx = 0
-        border_max_lx = self.lbSize
-        border_min_ly = 0
-        border_max_ly = self.lbSize
-        border_min_rx = 0
-        border_max_rx = self.lbSize
-        border_min_ry = 0
-        border_max_ry = self.lbSize
+
+        # Define the size of the as variables for each light board corner:
+        corner_top_left_x = 0
+        corner_top_left_y = self.lbSize-1
+        corner_top_right_x = self.lbSize-1
+        corner_top_right_y = self.lbSize-1
+        corner_bottom_left_x = 0
+        corner_bottom_left_y = 0
+        corner_bottom_right_x = self.lbSize-1
+        corner_bottom_right_y = 0
 
         action = instr[0]
         start_r = int(instr[1])
@@ -39,40 +40,37 @@ class Light_board:
         end_r = int(instr[3])
         end_c = int(instr[4])
 
-        #Check to make sure start row instruction within grid
-        if border_min_ly <= start_r <= border_max_ly:
-            pass
-        else:
-            if start_r < end_r:
-                start_r = border_min_ly
-            else:
-                end_r = border_max_ly
-        #Check to make sure start column instruction within grid
-        if border_min_lx <= start_c <= border_max_rx:
-            pass
-        else:
-            if start_c < end_c:
-                start_c = border_min_lx
-            else:
-                end_c = border_max_rx
-        #Check to make sure end row instruction within grid
-        if border_min_ly <= end_r <= border_max_ly:
-            pass
-        else:
-            if end_r > start_r:
-                end_r = border_max_ry
-            else:
-                end_r = border_min_ry
-        #Check to make sure end col instruction within grid
-        if border_min_lx <= end_c <= border_max_lx:
-            pass
-        else:
-            if end_c > start_c:
-                end_c = border_max_rx
-            else:
-                end_c = border_min_lx
+        # Adjust the instruction bounds to be within the size of the array
 
-        # Execute Instructions
+        # start_r
+        if start_r < end_r and corner_bottom_left_y <= start_r <= corner_top_left_y:
+            pass #print("Yes start_r is in bounds")
+        else:
+            start_r = corner_bottom_left_y
+            # print("start_r not in bounds")
+
+        # start_r
+        if start_c < end_c and corner_bottom_left_x <= start_c <= corner_bottom_right_x:
+            pass # print("Yes start_c is in bounds")
+        else :
+            start_c = corner_bottom_left_x
+            # print("start_c not in bounds")
+
+        # end_r
+        if end_r > start_r and corner_bottom_right_y <= end_r <= corner_top_right_y:
+            pass # print("Yes start_c is in bounds")
+        else :
+            end_r = corner_top_right_y
+            # print("start_c not in bounds")
+
+        # end_c
+        if end_c > start_c and corner_top_left_x <= end_c <= corner_top_right_x:
+            pass # print("Yes end_c is in bounds")
+        else :
+            end_c = corner_top_right_x
+            # print("end_c not in bounds")
+
+        # Execute the instruction:
         if action == 'turn on':
             for i in range(start_r, end_r+1):
                 for j in range(start_c, end_c+1):
